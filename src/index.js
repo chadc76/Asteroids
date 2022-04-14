@@ -1,5 +1,6 @@
 const Asteroid = require("./asteroid.js");
 const Game = require("./game.js");
+const GameView = require("./game_view.js");
 const MovingObject = require("./moving_object.js");
 const Util = require("./utils.js");
 
@@ -13,11 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
     radius: 5,
     color: "#00FF00"
   });
-
-  let game = new Game();
-
-  let asteroid = new Asteroid({ pos: [65, 65] });
-
-  game.draw(ctx);
-  circle.draw(ctx);
+  
+  let gameView = new GameView(ctx);
+  gameView.start();
 });

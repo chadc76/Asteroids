@@ -44,9 +44,10 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	const Asteroid = __webpack_require__(3);
+	const Asteroid = __webpack_require__(1);
 	const Game = __webpack_require__(4);
-	const MovingObject = __webpack_require__(1);
+	const GameView = __webpack_require__(5);
+	const MovingObject = __webpack_require__(3);
 	const Util = __webpack_require__(2);
 
 	window.MovingObject = MovingObject;
@@ -59,17 +60,59 @@
 	    radius: 5,
 	    color: "#00FF00"
 	  });
-
-	  let game = new Game();
-
-	  let asteroid = new Asteroid({ pos: [65, 65] });
-
-	  game.draw(ctx);
-	  circle.draw(ctx);
+	  
+	  let gameView = new GameView(ctx);
+	  gameView.start();
 	});
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	const Util = __webpack_require__(2);
+	const MovingObject = __webpack_require__(3);
+
+	const DEFAULTS = {
+	  COLOR: "#505050",
+	  RADIUS: 25,
+	  SPEED: 4
+	};
+
+	function Asteroid(options){
+	  this.pos = options.pos;
+	  MovingObject.call(this, options);
+	  this.radius = DEFAULTS.RADIUS;
+	  this.color = DEFAULTS.COLOR;
+	  this.vel = Util.randomVec(DEFAULTS.SPEED);
+	}
+
+	Util.inherits(Asteroid, MovingObject);
+
+	module.exports = Asteroid;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+	const Util = {
+	  inherits(childClass, parentClass) {
+	    childClass.prototype = Object.create(parentClass.prototype);
+	    childClass.prototype.constructor = childClass;
+	  },
+	  randomVec(length) {
+	    const deg = 2 * Math.PI * Math.random();
+	    return Util.scale([Math.sin(deg), Math.cos(deg)], length);
+	  },
+	  // Scale the length of a vector by the given amount.
+	  scale(vec, m) {
+	    return [vec[0] * m, vec[1] * m];
+	  }
+	}
+
+	module.exports = Util;
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports) {
 
 	function MovingObject(options) {
@@ -103,56 +146,10 @@
 	module.exports = MovingObject;
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-	const Util = {
-	  inherits(childClass, parentClass) {
-	    childClass.prototype = Object.create(parentClass.prototype);
-	    childClass.prototype.constructor = childClass;
-	  },
-	  randomVec(length) {
-	    const deg = 2 * Math.PI * Math.random();
-	    return Util.scale([Math.sin(deg), Math.cos(deg)], length);
-	  },
-	  // Scale the length of a vector by the given amount.
-	  scale(vec, m) {
-	    return [vec[0] * m, vec[1] * m];
-	  }
-	}
-
-	module.exports = Util;
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	const Util = __webpack_require__(2);
-	const MovingObject = __webpack_require__(1);
-
-	const DEFAULTS = {
-	  COLOR: "#505050",
-	  RADIUS: 25,
-	  SPEED: 4
-	};
-
-	function Asteroid(options){
-	  this.pos = options.pos;
-	  MovingObject.call(this, options);
-	  this.radius = DEFAULTS.RADIUS;
-	  this.color = DEFAULTS.COLOR;
-	  this.vel = Util.randomVec(DEFAULTS.SPEED);
-	}
-
-	Util.inherits(Asteroid, MovingObject);
-
-	module.exports = Asteroid;
-
-/***/ }),
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	const Asteroid = __webpack_require__(3);
+	const Asteroid = __webpack_require__(1);
 
 	function Game() {
 	  this.asteroids = [];
@@ -189,6 +186,28 @@
 	}
 
 	module.exports = Game;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	const Game = __webpack_require__(4);
+
+	function GameView(ctx) {
+	  this.game = new Game();
+	  this.ctx = ctx;
+	}
+
+	GameView.prototype.start = function() {
+	  let game = this.game;
+	  let ctx = this.ctx;
+	  setInterval(function() {
+	    game.draw(ctx);
+	    game.moveObjects();
+	  }, 20);
+	};
+
+	module.exports = GameView;
 
 /***/ })
 /******/ ]);
