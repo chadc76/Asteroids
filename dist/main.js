@@ -42,9 +42,24 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	const MovingObject = __webpack_require__(1);
+
+	window.MovingObject = MovingObject;
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports) {
 
-	console.log("Webpack is working!")
+	function MovingObject(options) {
+	  this.pos = options["pos"];
+	  this.vel = options["vel"];
+	  this.radius = options["radius"];
+	  this.color = options["color"];
+	}
+
+	module.exports = MovingObject;
 
 /***/ })
 /******/ ]);
