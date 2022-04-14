@@ -45,6 +45,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	const Asteroid = __webpack_require__(3);
+	const Game = __webpack_require__(4);
 	const MovingObject = __webpack_require__(1);
 	const Util = __webpack_require__(2);
 
@@ -59,12 +60,12 @@
 	    color: "#00FF00"
 	  });
 
+	  let game = new Game();
+
 	  let asteroid = new Asteroid({ pos: [65, 65] });
 
+	  game.draw(ctx);
 	  circle.draw(ctx);
-	  circle.move();
-	  circle.draw(ctx);
-	  asteroid.draw(ctx);
 	});
 
 /***/ }),
@@ -146,6 +147,48 @@
 	Util.inherits(Asteroid, MovingObject);
 
 	module.exports = Asteroid;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	const Asteroid = __webpack_require__(3);
+
+	function Game() {
+	  this.asteroids = [];
+	  
+	  this.addAsteroids();
+	};
+
+	Game.DIM_X = 1000;
+	Game.DIM_Y = 600;
+	Game.NUM_ASTEROIDS = 10;
+
+	Game.prototype.addAsteroids = function() {
+	  for (let i = 0; i <= Game.NUM_ASTEROIDS; i++) {
+	    this.asteroids.push(new Asteroid({ pos: this.randomPosition() }));
+	  }
+	};
+
+	Game.prototype.randomPosition = function() {
+	  return [
+	    Math.random() * Game.DIM_X,
+	    Math.random() * Game.DIM_Y
+	  ];
+	};
+
+	Game.prototype.draw = function(ctx) {
+	  ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
+	  ctx.fillStyle = "black";
+	  ctx.fillRect(0, 0, Game.DIM_X, Game.DIM_Y);
+	  this.asteroids.forEach(a => a.draw(ctx));
+	};
+
+	Game.prototype.moveObjects = function() {
+	  this.asteroids.forEach(a => a.move());
+	}
+
+	module.exports = Game;
 
 /***/ })
 /******/ ]);
