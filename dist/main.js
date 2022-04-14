@@ -45,6 +45,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	const MovingObject = __webpack_require__(1);
+	const Util = __webpack_require__(2);
 
 	window.MovingObject = MovingObject;
 
@@ -95,6 +96,19 @@
 	}
 
 	module.exports = MovingObject;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+	const Util = {
+	  inherits: function inherits(childClass, parentClass) {
+	    childClass.prototype = Object.create(parentClass.prototype);
+	    childClass.prototype.constructor = childClass;
+	  }
+	}
+
+	module.exports = Util;
 
 /***/ })
 /******/ ]);
