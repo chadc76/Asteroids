@@ -44,6 +44,7 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	const Asteroid = __webpack_require__(3);
 	const MovingObject = __webpack_require__(1);
 	const Util = __webpack_require__(2);
 
@@ -58,9 +59,12 @@
 	    color: "#00FF00"
 	  });
 
+	  let asteroid = new Asteroid({ pos: [65, 65] });
+
 	  circle.draw(ctx);
 	  circle.move();
 	  circle.draw(ctx);
+	  asteroid.draw(ctx);
 	});
 
 /***/ }),
@@ -68,10 +72,10 @@
 /***/ (function(module, exports) {
 
 	function MovingObject(options) {
-	  this.pos = options["pos"];
-	  this.vel = options["vel"];
-	  this.radius = options["radius"];
-	  this.color = options["color"];
+	  this.pos = options.pos;
+	  this.vel = options.vel;
+	  this.radius = options.radius;
+	  this.color = options.color;
 	}
 
 	MovingObject.prototype.draw = function(ctx) {
@@ -117,6 +121,31 @@
 	}
 
 	module.exports = Util;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	const Util = __webpack_require__(2);
+	const MovingObject = __webpack_require__(1);
+
+	const DEFAULTS = {
+	  COLOR: "#505050",
+	  RADIUS: 25,
+	  SPEED: 4
+	};
+
+	function Asteroid(options){
+	  this.pos = options.pos;
+	  MovingObject.call(this, options);
+	  this.radius = DEFAULTS.RADIUS;
+	  this.color = DEFAULTS.COLOR;
+	  this.vel = Util.randomVec(DEFAULTS.SPEED);
+	}
+
+	Util.inherits(Asteroid, MovingObject);
+
+	module.exports = Asteroid;
 
 /***/ })
 /******/ ]);

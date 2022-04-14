@@ -1,3 +1,4 @@
+const Asteroid = require("./asteroid.js");
 const MovingObject = require("./moving_object.js");
 const Util = require("./utils.js");
 
@@ -12,7 +13,10 @@ document.addEventListener("DOMContentLoaded", function() {
     color: "#00FF00"
   });
 
+  let asteroid = new Asteroid({ pos: [65, 65] });
+
   circle.draw(ctx);
   circle.move();
   circle.draw(ctx);
+  asteroid.draw(ctx);
 });
