@@ -12,4 +12,6 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   circle.draw(ctx);
+  circle.move();
+  circle.draw(ctx);
 });
