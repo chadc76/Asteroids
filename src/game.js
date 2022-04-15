@@ -75,4 +75,8 @@ Game.prototype.remove = function (asteroid) {
   this.asteroids.splice(this.asteroids.indexOf(asteroid), 1);
 };
 
+Game.prototype.allObjects = function() {
+  return [...this.asteroids, ...this.ships];
+}
+
 module.exports = Game;
