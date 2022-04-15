@@ -93,6 +93,10 @@ Game.prototype.remove = function (object) {
     this.asteroids.splice(this.asteroids.indexOf(object), 1);
   } else if (object instanceof Bullet) {
     this.bullets.splice(this.bullets.indexOf(object), 1);
+  } else if (object instanceof Ship) {
+    this.ships.splice(this.ships.indexOf(object), 1);
+  } else {
+    throw new Error("unknown type of object");
   };
 };
 
