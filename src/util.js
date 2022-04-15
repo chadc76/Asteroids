@@ -3,6 +3,7 @@ const Util = {
     childClass.prototype = Object.create(parentClass.prototype);
     childClass.prototype.constructor = childClass;
   },
+
   randomVec(length) {
     const deg = 2 * Math.PI * Math.random();
     return Util.scale([Math.sin(deg), Math.cos(deg)], length);
@@ -14,7 +15,7 @@ const Util = {
 
   wrap(pos, maxPos) {
     if (pos < 0) {
-      return maxPos + (pos % maxPos);
+      return maxPos - (pos % maxPos);
     } else if (pos > maxPos) {
       return pos % maxPos;
     } else {
