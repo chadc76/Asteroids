@@ -2,14 +2,13 @@ const Util = require("./util.js");
 const MovingObject = require("./moving_object.js");
 
 function Bullet(options) {
-  options = options || {};
-  this.pos = options.pos;
-  options.color = options.color;
-  options.radius = 1;
-  options.vel = options.vel;
+  options.radius = Bullet.RADIUS;
 
   MovingObject.call(this, options);
 };
+
+Bullet.RADIUS = 2;
+Bullet.SPEED = 15;
 
 Util.inherits(Bullet, MovingObject);
 
