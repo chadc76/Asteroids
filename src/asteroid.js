@@ -1,5 +1,6 @@
 const Util = require("./util.js");
 const MovingObject = require("./moving_object.js");
+const Bullet = require("./bullet.js");
 const Ship = require("./ship");
 
 const DEFAULTS = {
