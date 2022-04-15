@@ -282,6 +282,7 @@
 
 	const Util = __webpack_require__(3);
 	const MovingObject = __webpack_require__(4);
+	const Bullet = __webpack_require__(7);
 
 	function randomColor() {
 	  const hexDigits = "0123456789ABCDEF";
@@ -315,6 +316,16 @@
 	  this.vel[0] += impulse[0];
 	  this.vel[1] += impulse[1];
 	};
+
+	Ship.prototype.fireBullet = function() {
+	  const bullet = new Bullet({
+	    "pos": this.pos,
+	    "color": this.color,
+	    "vel": this.vel
+	  })
+
+	  this.game.add(bullet);
+	}
 
 	module.exports = Ship;
 
@@ -356,6 +367,27 @@
 	};
 
 	module.exports = GameView;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	const Util = __webpack_require__(3);
+	const MovingObject = __webpack_require__(4);
+
+	function Bullet(options) {
+	  options = options || {};
+	  this.pos = options.pos;
+	  options.color = options.color;
+	  options.radius = 1;
+	  options.vel = options.vel;
+
+	  MovingObject.call(this, options);
+	};
+
+	Util.inherits(Bullet, MovingObject);
+
+	module.exports = Bullet;
 
 /***/ })
 /******/ ]);
