@@ -1,18 +1,26 @@
 const Util = require("./util.js");
 const MovingObject = require("./moving_object.js");
 
-const DEFAULTS = {
-  COLOR: "#00FF00",
-  RADIUS: 15
-};
+function randomColor() {
+  const hexDigits = "0123456789ABCDEF";
+
+  let color = "#";
+  for (let i = 0; i < 3; i++) {
+    color += hexDigits[Math.floor((Math.random() * 16))];
+  }
+
+  return color;
+}
 
 function Ship(options) {
-  options.color = DEFAULTS.COLOR;
-  options.radius = DEFAULTS.RADIUS;
+  options.color = options.color || randomColor();
+  options.radius = Ship.RADIUS;
   options.vel = options.vel || [0, 0];
 
   MovingObject.call(this, options);
 };
+
+Ship.RADIUS = 15;
 
 Util.inherits(Ship, MovingObject);
 
@@ -23,7 +31,7 @@ Ship.prototype.relocate = function() {
 
 Ship.prototype.power = function(impulse) {
   this.vel[0] += impulse[0];
-  this.vel[1] += impulse[1]
+  this.vel[1] += impulse[1];
 };
 
 module.exports = Ship;
