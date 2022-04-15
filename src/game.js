@@ -105,11 +105,8 @@ Game.prototype.allObjects = function() {
 }
 
 Game.prototype.isOutOfBounds = function(pos) {
-  return (
-    (pos[0] < 0) || (pos[1] < 0) || 
-    (pos[0] > Game.DIM_X) || 
-    (pos[1] > Game.DIM_Y)
-  );
+  return (pos[0] < 0) || (pos[1] < 0) || 
+    (pos[0] > Game.DIM_X) || (pos[1] > Game.DIM_Y);
 }
 
 module.exports = Game;

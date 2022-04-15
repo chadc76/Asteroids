@@ -168,11 +168,8 @@
 	}
 
 	Game.prototype.isOutOfBounds = function(pos) {
-	  return (
-	    (pos[0] < 0) || (pos[1] < 0) || 
-	    (pos[0] > Game.DIM_X) || 
-	    (pos[1] > Game.DIM_Y)
-	  );
+	  return (pos[0] < 0) || (pos[1] < 0) || 
+	    (pos[0] > Game.DIM_X) || (pos[1] > Game.DIM_Y);
 	}
 
 	module.exports = Game;
@@ -295,12 +292,20 @@
 	  );
 
 	  ctx.fill();
-	}
+	};
+
+	MovingObject.prototype.isWrappable = true;
 
 	MovingObject.prototype.move = function() {
-	  let unwrapped = [this.pos[0] + this.vel[0], this.pos[1] + this.vel[1]];
+	  this.pos = [this.pos[0] + this.vel[0], this.pos[1] + this.vel[1]];
 
-	  this.pos = this.game.wrap(unwrapped);
+	  if (this.game.isOutOfBounds(this.pos)) {
+	    if (this.isWrappable) {
+	      this.pos = this.game.wrap(this.pos);
+	    } else {
+	      this.remove();
+	    }
+	  }
 	};
 
 	MovingObject.prototype.isCollideWith = function (otherObject) {
@@ -445,6 +450,8 @@
 	Bullet.SPEED = 15;
 
 	Util.inherits(Bullet, MovingObject);
+
+	Bullet.prototype.isWrappable = false;
 
 	module.exports = Bullet;
 

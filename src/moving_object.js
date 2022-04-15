@@ -22,12 +22,20 @@ MovingObject.prototype.draw = function(ctx) {
   );
 
   ctx.fill();
-}
+};
+
+MovingObject.prototype.isWrappable = true;
 
 MovingObject.prototype.move = function() {
-  let unwrapped = [this.pos[0] + this.vel[0], this.pos[1] + this.vel[1]];
+  this.pos = [this.pos[0] + this.vel[0], this.pos[1] + this.vel[1]];
 
-  this.pos = this.game.wrap(unwrapped);
+  if (this.game.isOutOfBounds(this.pos)) {
+    if (this.isWrappable) {
+      this.pos = this.game.wrap(this.pos);
+    } else {
+      this.remove();
+    }
+  }
 };
 
 MovingObject.prototype.isCollideWith = function (otherObject) {
