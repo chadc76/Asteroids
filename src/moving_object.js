@@ -28,6 +28,11 @@ MovingObject.prototype.move = function() {
   let unwrapped = [this.pos[0] + this.vel[0], this.pos[1] + this.vel[1]];
 
   this.pos = this.game.wrap(unwrapped);
-}
+};
+
+MovingObject.prototype.isCollideWith = function (otherObject) {
+  const centerDist = Util.dist(this.pos, otherObject.pos);
+  return centerDist < (this.radius + otherObject.radius);
+};
 
 module.exports = MovingObject;
