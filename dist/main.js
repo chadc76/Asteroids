@@ -70,7 +70,7 @@
 	  this.asteroids = [];
 	  this.ships = [];
 	  this.bullets = [];
-	  
+
 	  this.addAsteroids();
 	};
 
@@ -150,8 +150,12 @@
 	  this.checkCollisions();
 	};
 
-	Game.prototype.remove = function (asteroid) {
-	  this.asteroids.splice(this.asteroids.indexOf(asteroid), 1);
+	Game.prototype.remove = function (object) {
+	  if (object instanceof Asteroid) {
+	    this.asteroids.splice(this.asteroids.indexOf(object), 1);
+	  } else if (object instanceof Bullet) {
+	    this.bullets.splice(this.bullets.indexOf(object), 1);
+	  };
 	};
 
 	Game.prototype.allObjects = function() {
