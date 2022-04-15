@@ -14,7 +14,7 @@ function Game() {
 Game.BG_COLOR = "#000000";
 Game.DIM_X = 1000;
 Game.DIM_Y = 600;
-Game.NUM_ASTEROIDS = 7;
+Game.NUM_ASTEROIDS = 10;
 
 Game.prototype.add = function add(object) {
   if (object instanceof Asteroid) {
@@ -103,11 +103,11 @@ Game.prototype.remove = function (object) {
 
 Game.prototype.allObjects = function() {
   return [].concat(this.asteroids, this.ships, this.bullets);
-}
+};
 
 Game.prototype.isOutOfBounds = function(pos) {
   return (pos[0] < 0) || (pos[1] < 0) || 
     (pos[0] > Game.DIM_X) || (pos[1] > Game.DIM_Y);
-}
+};
 
 module.exports = Game;

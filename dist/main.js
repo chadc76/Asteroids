@@ -56,7 +56,7 @@
 	  const img = new Image();
 	  img.src = "space.jpg";
 	  const game = new Game();
-	  new GameView(game, ctx).start(img);
+	  new GameView(game, ctx, img).start();
 	});
 
 /***/ }),
@@ -79,7 +79,7 @@
 	Game.BG_COLOR = "#000000";
 	Game.DIM_X = 1000;
 	Game.DIM_Y = 600;
-	Game.NUM_ASTEROIDS = 7;
+	Game.NUM_ASTEROIDS = 10;
 
 	Game.prototype.add = function add(object) {
 	  if (object instanceof Asteroid) {
@@ -168,12 +168,12 @@
 
 	Game.prototype.allObjects = function() {
 	  return [].concat(this.asteroids, this.ships, this.bullets);
-	}
+	};
 
 	Game.prototype.isOutOfBounds = function(pos) {
 	  return (pos[0] < 0) || (pos[1] < 0) || 
 	    (pos[0] > Game.DIM_X) || (pos[1] > Game.DIM_Y);
-	}
+	};
 
 	module.exports = Game;
 
@@ -420,10 +420,11 @@
 /* 6 */
 /***/ (function(module, exports) {
 
-	function GameView(game, ctx) {
+	function GameView(game, ctx, img) {
 	  this.game = game;
 	  this.ctx = ctx;
 	  this.ship = this.game.addShip();
+	  this.img = img;
 	}
 
 	GameView.MOVES = {
@@ -446,14 +447,19 @@
 	};
 
 
-	GameView.prototype.start = function(img) {
+	GameView.prototype.start = function() {
 	  this.bindKeyHandlers();
-	  let game = this.game;
-	  let ctx = this.ctx;
-	  setInterval(function() {
-	    game.step();
-	    game.draw(ctx, img);
-	  }, 20);
+	  this.lastTime = 0;
+
+	  requestAnimationFrame(this.animate.bind(this));
+	};
+
+	GameView.prototype.animate = function() {
+
+	  this.game.step();
+	  this.game.draw(this.ctx, this.img);
+
+	  requestAnimationFrame(this.animate.bind(this));
 	};
 
 	module.exports = GameView;

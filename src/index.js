@@ -10,5 +10,5 @@ document.addEventListener("DOMContentLoaded", function() {
   const img = new Image();
   img.src = "space.jpg";
   const game = new Game();
-  new GameView(game, ctx).start(img);
+  new GameView(game, ctx, img).start();
 });

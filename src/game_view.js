@@ -1,7 +1,8 @@
-function GameView(game, ctx) {
+function GameView(game, ctx, img) {
   this.game = game;
   this.ctx = ctx;
   this.ship = this.game.addShip();
+  this.img = img;
 }
 
 GameView.MOVES = {
@@ -24,14 +25,19 @@ GameView.prototype.bindKeyHandlers = function () {
 };
 
 
-GameView.prototype.start = function(img) {
+GameView.prototype.start = function() {
   this.bindKeyHandlers();
-  let game = this.game;
-  let ctx = this.ctx;
-  setInterval(function() {
-    game.step();
-    game.draw(ctx, img);
-  }, 20);
+  this.lastTime = 0;
+
+  requestAnimationFrame(this.animate.bind(this));
+};
+
+GameView.prototype.animate = function() {
+
+  this.game.step();
+  this.game.draw(this.ctx, this.img);
+
+  requestAnimationFrame(this.animate.bind(this));
 };
 
 module.exports = GameView;
