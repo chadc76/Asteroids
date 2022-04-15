@@ -157,6 +157,7 @@
 	Game.prototype.remove = function (object) {
 	  if (object instanceof Asteroid) {
 	    this.asteroids.splice(this.asteroids.indexOf(object), 1);
+	    this.checkRoundOver();
 	  } else if (object instanceof Bullet) {
 	    this.bullets.splice(this.bullets.indexOf(object), 1);
 	  } else if (object instanceof Ship) {
@@ -174,6 +175,14 @@
 	  return (pos[0] < 0) || (pos[1] < 0) || 
 	    (pos[0] > Game.DIM_X) || (pos[1] > Game.DIM_Y);
 	};
+
+	Game.prototype.checkRoundOver = function() {
+	  if (this.asteroids.length === 0) {
+	    alert("Next Wave Inbound");
+	    Game.NUM_ASTEROIDS += 5;
+	    this.addAsteroids();
+	  }
+	}
 
 	module.exports = Game;
 
