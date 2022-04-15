@@ -53,8 +53,10 @@
 	  canvasEl.height = Game.DIM_Y;
 
 	  const ctx = canvasEl.getContext("2d");
+	  const img = new Image();
+	  img.src = "space.jpg";
 	  const game = new Game();
-	  new GameView(game, ctx).start();
+	  new GameView(game, ctx).start(img);
 	});
 
 /***/ }),
@@ -115,10 +117,11 @@
 	  ];
 	};
 
-	Game.prototype.draw = function(ctx) {
+	Game.prototype.draw = function(ctx, img) {
 	  ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
 	  ctx.fillStyle = "black";
 	  ctx.fillRect(0, 0, Game.DIM_X, Game.DIM_Y);
+	  ctx.drawImage(img, 0, 0, 1000, 600);
 	  this.allObjects().forEach(obj => obj.draw(ctx));
 	};
 
@@ -443,13 +446,13 @@
 	};
 
 
-	GameView.prototype.start = function() {
+	GameView.prototype.start = function(img) {
 	  this.bindKeyHandlers();
 	  let game = this.game;
 	  let ctx = this.ctx;
 	  setInterval(function() {
 	    game.step();
-	    game.draw(ctx);
+	    game.draw(ctx, img);
 	  }, 20);
 	};
 

@@ -52,10 +52,11 @@ Game.prototype.randomPosition = function() {
   ];
 };
 
-Game.prototype.draw = function(ctx) {
+Game.prototype.draw = function(ctx, img) {
   ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, Game.DIM_X, Game.DIM_Y);
+  ctx.drawImage(img, 0, 0, 1000, 600);
   this.allObjects().forEach(obj => obj.draw(ctx));
 };
 

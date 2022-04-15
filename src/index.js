@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", function() {
   canvasEl.height = Game.DIM_Y;
 
   const ctx = canvasEl.getContext("2d");
+  const img = new Image();
+  img.src = "space.jpg";
   const game = new Game();
-  new GameView(game, ctx).start();
+  new GameView(game, ctx).start(img);
 });

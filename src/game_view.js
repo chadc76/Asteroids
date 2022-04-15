@@ -24,13 +24,13 @@ GameView.prototype.bindKeyHandlers = function () {
 };
 
 
-GameView.prototype.start = function() {
+GameView.prototype.start = function(img) {
   this.bindKeyHandlers();
   let game = this.game;
   let ctx = this.ctx;
   setInterval(function() {
     game.step();
-    game.draw(ctx);
+    game.draw(ctx, img);
   }, 20);
 };
 
