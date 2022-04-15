@@ -10,6 +10,16 @@ const Util = {
   // Scale the length of a vector by the given amount.
   scale(vec, m) {
     return [vec[0] * m, vec[1] * m];
+  },
+
+  wrap(pos, maxPos) {
+    if (pos < 0) {
+      return maxPos + (pos % maxPos);
+    } else if (pos > maxPos) {
+      return pos % maxPos;
+    } else {
+      return pos;
+    }
   }
 }
 

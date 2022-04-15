@@ -1,5 +1,5 @@
-const Util = require("./utils");
-const MovingObject = require("./moving_object");
+const Util = require("./util.js");
+const MovingObject = require("./moving_object.js");
 
 const DEFAULTS = {
   COLOR: "#505050",
@@ -8,11 +8,13 @@ const DEFAULTS = {
 };
 
 function Asteroid(options){
-  this.pos = options.pos;
+  options = options || {};
+  options.color = DEFAULTS.COLOR;
+  options.pos = options.pos || options.game.randomPosition();
+  options.radius = DEFAULTS.RADIUS;
+  options.vel = options.vel || Util.randomVec(DEFAULTS.SPEED);
+
   MovingObject.call(this, options);
-  this.radius = DEFAULTS.RADIUS;
-  this.color = DEFAULTS.COLOR;
-  this.vel = Util.randomVec(DEFAULTS.SPEED);
 }
 
 Util.inherits(Asteroid, MovingObject);

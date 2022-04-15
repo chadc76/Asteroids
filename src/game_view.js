@@ -1,7 +1,5 @@
-const Game = require("./game.js");
-
-function GameView(ctx) {
-  this.game = new Game();
+function GameView(game, ctx) {
+  this.game = game;
   this.ctx = ctx;
 }
 
