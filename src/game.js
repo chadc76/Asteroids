@@ -9,7 +9,7 @@ function Game() {
 
 Game.DIM_X = 1000;
 Game.DIM_Y = 600;
-Game.NUM_ASTEROIDS = 4;
+Game.NUM_ASTEROIDS = 2;
 
 Game.prototype.addAsteroids = function() {
   for (let i = 0; i <= Game.NUM_ASTEROIDS; i++) {
@@ -57,6 +57,10 @@ Game.prototype.checkCollisions = function () {
 Game.prototype.step = function () {
   this.moveObjects();
   this.checkCollisions();
+};
+
+Game.prototype.remove = function (asteroid) {
+  this.asteroids.splice(this.asteroids.indexOf(asteroid), 1);
 };
 
 module.exports = Game;
