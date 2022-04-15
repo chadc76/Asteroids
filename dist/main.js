@@ -159,7 +159,7 @@
 	};
 
 	Game.prototype.allObjects = function() {
-	  return [].concat(this.asteroids, this.ships);
+	  return [].concat(this.asteroids, this.ships, this.bullets);
 	}
 
 	module.exports = Game;
