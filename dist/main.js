@@ -259,6 +259,26 @@
 	  dir(vec) {
 	    const norm = Util.norm(vec);
 	    return Util.scale(vec, 1 / norm);
+	  },
+
+	  vel(vel, impulse) {
+	    if (impulse === 0) {
+	      return [0, 0];
+	    }
+
+	    if ((vel[0] < 0 && impulse[0] > 0) || (vel[0] > 0 && impulse[0] < 0) ) {
+	      vel[0] = impulse[0];
+	    } else {
+	      vel[0] += impulse[0];
+	    };
+
+	    if ((vel[1] < 0 && impulse[1] > 0) || (vel[1] > 0 && impulse[1] < 0)) {
+	      vel[1] = impulse[1];
+	    } else {
+	      vel[1] += impulse[1];
+	    };
+
+	    return vel;
 	  }
 	}
 
@@ -359,8 +379,9 @@
 	};
 
 	Ship.prototype.power = function(impulse) {
-	  this.vel[0] += impulse[0];
-	  this.vel[1] += impulse[1];
+	  let newVel = Util.vel(this.vel, impulse)
+	  this.vel[0] = newVel[0];
+	  this.vel[1] = newVel[1];
 	};
 
 	Ship.prototype.fireBullet = function() {
@@ -407,6 +428,7 @@
 	  a: [-1, 0],
 	  s: [0, 1],
 	  d: [1, 0], 
+	  x: 0, 
 	}
 
 	GameView.prototype.bindKeyHandlers = function () {

@@ -36,6 +36,26 @@ const Util = {
   dir(vec) {
     const norm = Util.norm(vec);
     return Util.scale(vec, 1 / norm);
+  },
+
+  vel(vel, impulse) {
+    if (impulse === 0) {
+      return [0, 0];
+    }
+
+    if ((vel[0] < 0 && impulse[0] > 0) || (vel[0] > 0 && impulse[0] < 0) ) {
+      vel[0] = impulse[0];
+    } else {
+      vel[0] += impulse[0];
+    };
+
+    if ((vel[1] < 0 && impulse[1] > 0) || (vel[1] > 0 && impulse[1] < 0)) {
+      vel[1] = impulse[1];
+    } else {
+      vel[1] += impulse[1];
+    };
+
+    return vel;
   }
 }
 

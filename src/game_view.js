@@ -9,6 +9,7 @@ GameView.MOVES = {
   a: [-1, 0],
   s: [0, 1],
   d: [1, 0], 
+  x: 0, 
 }
 
 GameView.prototype.bindKeyHandlers = function () {
