@@ -36,7 +36,9 @@ Game.prototype.addShip = function() {
     game: this
   });
 
-  this.ships.push(ship);
+  this.add(ship);
+
+  return ship;
 };
 
 Game.prototype.randomPosition = function() {
