@@ -167,6 +167,14 @@
 	  return [].concat(this.asteroids, this.ships, this.bullets);
 	}
 
+	Game.prototype.isOutOfBounds = function(pos) {
+	  return (
+	    (pos[0] < 0) || (pos[1] < 0) || 
+	    (pos[0] > Game.DIM_X) || 
+	    (pos[1] > Game.DIM_Y)
+	  );
+	}
+
 	module.exports = Game;
 
 /***/ }),
