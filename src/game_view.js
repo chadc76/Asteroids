@@ -28,8 +28,8 @@ GameView.prototype.start = function() {
   let game = this.game;
   let ctx = this.ctx;
   setInterval(function() {
-    game.draw(ctx);
     game.step();
+    game.draw(ctx);
   }, 20);
 };
 
