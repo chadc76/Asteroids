@@ -181,6 +181,18 @@
 	  ];
 	};
 
+	Game.prototype.checkCollisions = function () {
+	  for (let i = 0; i < this.asteroids.length; i++) {
+	    let asteroid1 = this.asteroids[i];
+	    for (let j = i + 1; j < this.asteroids.length; j++) {
+	      let asteroid2 = this.asteroids[2];
+	      if (asteroid1.isCollideWith(asteroid2)) {
+	        alert("COLLISON");
+	      }
+	    }
+	  }
+	};
+
 	module.exports = Game;
 
 /***/ }),
