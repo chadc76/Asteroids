@@ -146,10 +146,12 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	const Asteroid = __webpack_require__(1);
+	const Ship = __webpack_require__(9);
 	const Util = __webpack_require__(8);
 
 	function Game() {
 	  this.asteroids = [];
+	  this.ships = [];
 	  
 	  this.addAsteroids();
 	};
@@ -163,6 +165,15 @@
 	    let asteroid = new Asteroid({ pos: this.randomPosition(), game: this });
 	    this.asteroids.push(asteroid);
 	  }
+	};
+
+	Game.prototype.addShip = function() {
+	  const ship = new Ship({
+	    pos: this.randomPosition(),
+	    game: this
+	  });
+
+	  this.ships.push(ship);
 	};
 
 	Game.prototype.randomPosition = function() {
