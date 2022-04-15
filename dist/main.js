@@ -68,6 +68,7 @@
 
 	const Util = __webpack_require__(8);
 	const MovingObject = __webpack_require__(3);
+	const Ship = __webpack_require__(9);
 
 	const DEFAULTS = {
 	  COLOR: "#505050",
@@ -86,6 +87,14 @@
 	}
 
 	Util.inherits(Asteroid, MovingObject);
+
+	Asteroid.prototype.collideWith = function(otherObject) {
+	  if (otherObject instanceof Ship) {
+	    otherObject.relocate();
+	    return true;
+	  }
+	}
+
 
 	module.exports = Asteroid;
 
@@ -133,10 +142,6 @@
 	};
 
 	MovingObject.prototype.collideWith = function(otherObject) {
-	  if (this.isCollideWith(otherObject)) {
-	    this.game.remove(this);
-	    this.game.remove(otherObject);
-	  }
 	};
 
 	module.exports = MovingObject;
@@ -187,11 +192,11 @@
 	  ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
 	  ctx.fillStyle = "black";
 	  ctx.fillRect(0, 0, Game.DIM_X, Game.DIM_Y);
-	  this.allObjects.forEach(obj => obj.draw(ctx));
+	  this.allObjects().forEach(obj => obj.draw(ctx));
 	};
 
 	Game.prototype.moveObjects = function() {
-	  this.allObjects.forEach(obj => obj.move());
+	  this.allObjects().forEach(obj => obj.move());
 	};
 
 	Game.prototype.wrap = function(pos) {
@@ -201,13 +206,13 @@
 	};
 
 	Game.prototype.checkCollisions = function () {
-	  for (let i = 0; i < this.allObjects.length; i++) {
-	    let object1 = this.allObjects[i];
-	    for (let j = i + 1; j < this.allObjects.length; j++) {
-	      let object2 = this.allObjects[j];
+	  for (let i = 0; i < this.allObjects().length; i++) {
+	    let object1 = this.allObjects()[i];
+	    for (let j = i + 1; j < this.allObjects().length; j++) {
+	      let object2 = this.allObjects()[j];
 	      if (object1.isCollideWith(object2)) {
-	        object1.collideWith(object2);
-	        alert("COLLISION");
+	        const collision = object1.collideWith(object2);
+	        if (collision) return;
 	      }
 	    }
 	  }
@@ -223,7 +228,7 @@
 	};
 
 	Game.prototype.allObjects = function() {
-	  return [...this.asteroids, ...this.ships];
+	  return [].concat(this.asteroids, this.ships);
 	}
 
 	module.exports = Game;
@@ -235,6 +240,7 @@
 	function GameView(game, ctx) {
 	  this.game = game;
 	  this.ctx = ctx;
+	  this.ship = this.game.addShip();
 	}
 
 	GameView.prototype.start = function() {
@@ -308,6 +314,12 @@
 	};
 
 	Util.inherits(Ship, MovingObject);
+
+	Ship.prototype.relocate = function() {
+	  this.pos = this.game.randomPosition();
+	  this.vel = [0, 0];
+	};
+
 
 	module.exports = Ship;
 

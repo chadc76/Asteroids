@@ -1,6 +1,7 @@
 function GameView(game, ctx) {
   this.game = game;
   this.ctx = ctx;
+  this.ship = this.game.addShip();
 }
 
 GameView.prototype.start = function() {
