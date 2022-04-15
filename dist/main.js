@@ -133,10 +133,11 @@
 	};
 
 	Game.prototype.checkCollisions = function () {
-	  for (let i = 0; i < this.allObjects().length; i++) {
-	    let object1 = this.allObjects()[i];
-	    for (let j = i + 1; j < this.allObjects().length; j++) {
-	      let object2 = this.allObjects()[j];
+	  const allObjects = this.allObjects();
+	  for (let i = 0; i < allObjects.length; i++) {
+	    let object1 = allObjects[i];
+	    for (let j = i + 1; j < allObjects.length; j++) {
+	      let object2 = allObjects[j];
 	      if (object1.isCollideWith(object2)) {
 	        const collision = object1.collideWith(object2);
 	        if (collision) return;
