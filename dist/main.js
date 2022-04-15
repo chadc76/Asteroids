@@ -156,6 +156,10 @@
 	    this.asteroids.splice(this.asteroids.indexOf(object), 1);
 	  } else if (object instanceof Bullet) {
 	    this.bullets.splice(this.bullets.indexOf(object), 1);
+	  } else if (object instanceof Ship) {
+	    this.ships.splice(this.ships.indexOf(object), 1);
+	  } else {
+	    throw new Error("unknown type of object");
 	  };
 	};
 
@@ -171,6 +175,7 @@
 
 	const Util = __webpack_require__(3);
 	const MovingObject = __webpack_require__(4);
+	const Bullet = __webpack_require__(7);
 	const Ship = __webpack_require__(5);
 
 	const DEFAULTS = {
@@ -240,6 +245,15 @@
 	    return Math.sqrt(
 	      Math.pow(pos1[0] - pos2[0], 2) + Math.pow(pos1[1] - pos2[1], 2)
 	    );
+	  },
+
+	  norm(vec) {
+	    return Util.dist([0, 0], vec);
+	  },
+
+	  dir(vec) {
+	    const norm = Util.norm(vec);
+	    return Util.scale(vec, 1 / norm);
 	  }
 	}
 
@@ -299,8 +313,8 @@
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	const Util = __webpack_require__(3);
 	const MovingObject = __webpack_require__(4);
+	const Util = __webpack_require__(3);
 	const Bullet = __webpack_require__(7);
 
 	function randomColor() {
@@ -337,11 +351,28 @@
 	};
 
 	Ship.prototype.fireBullet = function() {
+	  const norm = Util.norm(this.vel);
+
+	  if (norm === 0) {
+	    // Can't fire unless moving.
+	    return;
+	  }
+
+	  const relVel = Util.scale(
+	    Util.dir(this.vel),
+	    Bullet.SPEED
+	  );
+
+	  const bulletVel = [
+	    relVel[0] + this.vel[0], relVel[1] + this.vel[1]
+	  ];
+
 	  const bullet = new Bullet({
-	    "pos": this.pos,
-	    "color": this.color,
-	    "vel": this.vel
-	  })
+	    pos: this.pos,
+	    vel: bulletVel,
+	    color: this.color,
+	    game: this.game
+	  });
 
 	  this.game.add(bullet);
 	}
@@ -382,8 +413,8 @@
 	  let game = this.game;
 	  let ctx = this.ctx;
 	  setInterval(function() {
-	    game.draw(ctx);
 	    game.step();
+	    game.draw(ctx);
 	  }, 20);
 	};
 
