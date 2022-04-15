@@ -9,10 +9,10 @@ function Game() {
 
 Game.DIM_X = 1000;
 Game.DIM_Y = 600;
-Game.NUM_ASTEROIDS = 2;
+Game.NUM_ASTEROIDS = 7;
 
 Game.prototype.addAsteroids = function() {
-  for (let i = 0; i <= Game.NUM_ASTEROIDS; i++) {
+  for (let i = 0; i < Game.NUM_ASTEROIDS; i++) {
     let asteroid = new Asteroid({ pos: this.randomPosition(), game: this });
     this.asteroids.push(asteroid);
   }
@@ -48,7 +48,8 @@ Game.prototype.checkCollisions = function () {
     for (let j = i + 1; j < this.asteroids.length; j++) {
       let asteroid2 = this.asteroids[2];
       if (asteroid1.isCollideWith(asteroid2)) {
-        alert("COLLISON");
+        asteroid1.collideWith(asteroid2);
+        alert("COLLISION");
       }
     }
   }

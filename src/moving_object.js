@@ -36,4 +36,11 @@ MovingObject.prototype.isCollideWith = function (otherObject) {
   return centerDist < (this.radius + otherObject.radius);
 };
 
+MovingObject.prototype.collideWith = function(otherObject) {
+  if (this.isCollideWith(otherObject)) {
+    this.game.remove(this);
+    this.game.remove(otherObject);
+  }
+};
+
 module.exports = MovingObject;
