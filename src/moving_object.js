@@ -1,4 +1,5 @@
 const Game = require("./game.js");
+const Util = require("./util.js")
 function MovingObject(options) {
   this.pos = options.pos;
   this.vel = options.vel;

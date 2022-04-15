@@ -94,6 +94,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	const Game = __webpack_require__(4);
+	const Util = __webpack_require__(8)
 	function MovingObject(options) {
 	  this.pos = options.pos;
 	  this.vel = options.vel;
