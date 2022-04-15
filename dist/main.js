@@ -62,12 +62,14 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	const Asteroid = __webpack_require__(2);
+	const Bullet = __webpack_require__(7);
 	const Ship = __webpack_require__(5);
 	const Util = __webpack_require__(3);
 
 	function Game() {
 	  this.asteroids = [];
 	  this.ships = [];
+	  this.bullets = [];
 	  
 	  this.addAsteroids();
 	};
@@ -82,6 +84,8 @@
 	    this.asteroids.push(object);
 	  } else if (object instanceof Ship) {
 	    this.ships.push(object);
+	  } else if(object instanceof Bullet) {
+	    this.bullets.push(object);
 	  } else {
 	    throw new Error("unknown type of object");
 	  }

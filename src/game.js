@@ -1,10 +1,12 @@
 const Asteroid = require("./asteroid.js");
+const Bullet = require("./bullet.js");
 const Ship = require("./ship.js");
 const Util = require("./util.js");
 
 function Game() {
   this.asteroids = [];
   this.ships = [];
+  this.bullets = [];
   
   this.addAsteroids();
 };
@@ -19,6 +21,8 @@ Game.prototype.add = function add(object) {
     this.asteroids.push(object);
   } else if (object instanceof Ship) {
     this.ships.push(object);
+  } else if(object instanceof Bullet) {
+    this.bullets.push(object);
   } else {
     throw new Error("unknown type of object");
   }
