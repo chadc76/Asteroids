@@ -9,14 +9,24 @@ function Game() {
   this.addAsteroids();
 };
 
+Game.BG_COLOR = "#000000";
 Game.DIM_X = 1000;
 Game.DIM_Y = 600;
 Game.NUM_ASTEROIDS = 7;
 
-Game.prototype.addAsteroids = function() {
+Game.prototype.add = function add(object) {
+  if (object instanceof Asteroid) {
+    this.asteroids.push(object);
+  } else if (object instanceof Ship) {
+    this.ships.push(object);
+  } else {
+    throw new Error("unknown type of object");
+  }
+};
+
+Game.prototype.addAsteroids = function addAsteroids() {
   for (let i = 0; i < Game.NUM_ASTEROIDS; i++) {
-    let asteroid = new Asteroid({ pos: this.randomPosition(), game: this });
-    this.asteroids.push(asteroid);
+    this.add(new Asteroid({ game: this }));
   }
 };
 
