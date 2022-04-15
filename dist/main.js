@@ -47,6 +47,7 @@
 	const Game = __webpack_require__(4);
 	const GameView = __webpack_require__(5);
 	const MovingObject = __webpack_require__(3);
+	const Ship = __webpack_require__(9);
 
 	document.addEventListener("DOMContentLoaded", function() {
 	  let ctx = document.getElementById('game-canvas').getContext('2d');
@@ -270,6 +271,30 @@
 	}
 
 	module.exports = Util;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	const Util = __webpack_require__(8);
+	const MovingObject = __webpack_require__(3);
+
+	const DEFAULTS = {
+	  COLOR: "#00FF00",
+	  RADIUS: 15
+	};
+
+	function Ship(options) {
+	  options.color = DEFAULTS.COLOR;
+	  options.radius = DEFAULTS.RADIUS;
+	  options.vel = options.vel || [0, 0];
+
+	  MovingObject.call(this, options);
+	};
+
+	Util.inherits(Ship, MovingObject);
+
+	module.exports = Ship;
 
 /***/ })
 /******/ ]);

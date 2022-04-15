@@ -1,6 +1,7 @@
 const Game = require("./game.js");
 const GameView = require("./game_view.js");
 const MovingObject = require("./moving_object.js");
+const Ship = require("./ship.js");
 
 document.addEventListener("DOMContentLoaded", function() {
   let ctx = document.getElementById('game-canvas').getContext('2d');
