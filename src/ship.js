@@ -40,9 +40,9 @@ Ship.prototype.relocate = function() {
 };
 
 Ship.prototype.power = function(impulse) {
-  let newVel = Util.vel(this.vel, impulse)
-  this.vel[0] = newVel[0];
-  this.vel[1] = newVel[1];
+  let newVel = impulse;
+  this.vel[0] += newVel[0];
+  this.vel[1] += newVel[1];
 };
 
 Ship.prototype.fireBullet = function() {
