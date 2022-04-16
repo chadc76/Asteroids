@@ -45,7 +45,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	const Game = __webpack_require__(1);
-	const GameView = __webpack_require__(6);
+	const GameView = __webpack_require__(8);
 
 	document.addEventListener("DOMContentLoaded", function() {
 	  const canvasEl = document.getElementsByTagName("canvas")[0];
@@ -64,9 +64,9 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	const Asteroid = __webpack_require__(2);
-	const Bullet = __webpack_require__(7);
-	const Explosion = __webpack_require__(8);
-	const Ship = __webpack_require__(5);
+	const Bullet = __webpack_require__(5);
+	const Explosion = __webpack_require__(7);
+	const Ship = __webpack_require__(6);
 	const Util = __webpack_require__(3);
 
 	function Game() {
@@ -198,9 +198,9 @@
 
 	const Util = __webpack_require__(3);
 	const MovingObject = __webpack_require__(4);
-	const Bullet = __webpack_require__(7);
-	const Ship = __webpack_require__(5);
-	const Explosion = __webpack_require__(8);
+	const Bullet = __webpack_require__(5);
+	const Ship = __webpack_require__(6);
+	const Explosion = __webpack_require__(7);
 
 	const DEFAULTS = {
 	  COLOR: "#505050",
@@ -231,6 +231,7 @@
 	      radius: this.radius,
 	      game: this.game
 	    })
+	    console.log(explosion.radius)
 	    this.game.add(explosion);
 	    this.remove();
 	    otherObject.remove();
@@ -383,9 +384,32 @@
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	const Util = __webpack_require__(3);
+	const MovingObject = __webpack_require__(4);
+
+	function Bullet(options) {
+	  options.radius = Bullet.RADIUS;
+
+	  MovingObject.call(this, options);
+	};
+
+	Bullet.RADIUS = 2;
+	Bullet.SPEED = 15;
+
+	Util.inherits(Bullet, MovingObject);
+
+	Bullet.prototype.isWrappable = false;
+
+	module.exports = Bullet;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
 	const MovingObject = __webpack_require__(4);
 	const Util = __webpack_require__(3);
-	const Bullet = __webpack_require__(7);
+	const Bullet = __webpack_require__(5);
+	const Explosion = __webpack_require__(7);
 
 	function randomColor() {
 	  const hexDigits = "0123456789ABCDEF";
@@ -411,8 +435,16 @@
 	Util.inherits(Ship, MovingObject);
 
 	Ship.prototype.relocate = function() {
-	  this.pos = this.game.randomPosition();
+	  this.boom();
+	  let explosion = new Explosion({
+	    pos: this.pos,
+	    radius: this.radius,
+	    game: this.game
+	  })
+	  console.log(explosion.radius)
+	  this.game.add(explosion);
 	  this.vel = [0, 0];
+	  this.pos = this.game.randomPosition();
 	};
 
 	Ship.prototype.power = function(impulse) {
@@ -422,13 +454,13 @@
 	};
 
 	Ship.prototype.fireBullet = function() {
-	  this.pew();
 	  const norm = Util.norm(this.vel);
-
+	  
 	  if (norm === 0) {
-	    // Can't fire unless moving.
 	    return;
 	  }
+	  
+	  this.pew();
 
 	  const relVel = Util.scale(
 	    Util.dir(this.vel),
@@ -447,10 +479,16 @@
 	  });
 
 	  this.game.add(bullet);
-	}
+	};
 
 	Ship.prototype.pew = function() {
 	  let beat = new Audio('./laser.wav');
+	  beat.volume = 0.05;
+	  beat.play();
+	};
+
+	Ship.prototype.boom = function () {
+	  let beat = new Audio('./small_explosion.wav');
 	  beat.volume = 0.05;
 	  beat.play();
 	}
@@ -458,7 +496,38 @@
 	module.exports = Ship;
 
 /***/ }),
-/* 6 */
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	const Util = __webpack_require__(3);
+	const MovingObject = __webpack_require__(4);
+
+	function Explosion(options) {
+	  options.pos = options.pos
+	  options.radius = options.radius;
+	  options.vel = [0, 0];
+	  this.timeCreated = Date.now();
+
+	  MovingObject.call(this, options);
+	}
+
+	Util.inherits(Explosion, MovingObject);
+
+	Explosion.prototype.draw = function(ctx) {
+	  const explodedImg = new Image();
+	  explodedImg.src = "explosion.png";
+
+	  if (Date.now() - this.timeCreated > 300) {
+	    this.remove();
+	    return;
+	  }
+	  ctx.drawImage(explodedImg, this.pos[0], this.pos[1], this.radius * 3, this.radius * 3);
+	}
+
+	module.exports = Explosion;
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports) {
 
 	function GameView(game, ctx, img) {
@@ -505,59 +574,6 @@
 	};
 
 	module.exports = GameView;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	const Util = __webpack_require__(3);
-	const MovingObject = __webpack_require__(4);
-
-	function Bullet(options) {
-	  options.radius = Bullet.RADIUS;
-
-	  MovingObject.call(this, options);
-	};
-
-	Bullet.RADIUS = 2;
-	Bullet.SPEED = 15;
-
-	Util.inherits(Bullet, MovingObject);
-
-	Bullet.prototype.isWrappable = false;
-
-	module.exports = Bullet;
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	const Util = __webpack_require__(3);
-	const MovingObject = __webpack_require__(4);
-
-	function Explosion(options) {
-	  options.pos = options.pos
-	  options.radius = options.radius;
-	  options.vel = [0, 0];
-	  this.timeCreated = Date.now();
-
-	  MovingObject.call(this, options);
-	}
-
-	Util.inherits(Explosion, MovingObject);
-
-	Explosion.prototype.draw = function(ctx) {
-	  const explodedImg = new Image();
-	  explodedImg.src = "explosion.png";
-
-	  if (Date.now() - this.timeCreated > 300) {
-	    this.remove();
-	    return;
-	  }
-	  ctx.drawImage(explodedImg, this.pos[0], this.pos[1], 75, 75);
-	}
-
-	module.exports = Explosion;
 
 /***/ })
 /******/ ]);

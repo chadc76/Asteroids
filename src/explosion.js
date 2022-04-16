@@ -20,7 +20,7 @@ Explosion.prototype.draw = function(ctx) {
     this.remove();
     return;
   }
-  ctx.drawImage(explodedImg, this.pos[0], this.pos[1], 75, 75);
+  ctx.drawImage(explodedImg, this.pos[0], this.pos[1], this.radius * 3, this.radius * 3);
 }
 
 module.exports = Explosion;

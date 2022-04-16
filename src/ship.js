@@ -1,6 +1,7 @@
 const MovingObject = require("./moving_object.js");
 const Util = require("./util.js");
 const Bullet = require("./bullet.js");
+const Explosion = require("./explosion.js");
 
 function randomColor() {
   const hexDigits = "0123456789ABCDEF";
@@ -26,8 +27,16 @@ Ship.RADIUS = 15;
 Util.inherits(Ship, MovingObject);
 
 Ship.prototype.relocate = function() {
-  this.pos = this.game.randomPosition();
+  this.boom();
+  let explosion = new Explosion({
+    pos: this.pos,
+    radius: this.radius,
+    game: this.game
+  })
+  console.log(explosion.radius)
+  this.game.add(explosion);
   this.vel = [0, 0];
+  this.pos = this.game.randomPosition();
 };
 
 Ship.prototype.power = function(impulse) {
@@ -37,13 +46,13 @@ Ship.prototype.power = function(impulse) {
 };
 
 Ship.prototype.fireBullet = function() {
-  this.pew();
   const norm = Util.norm(this.vel);
-
+  
   if (norm === 0) {
-    // Can't fire unless moving.
     return;
   }
+  
+  this.pew();
 
   const relVel = Util.scale(
     Util.dir(this.vel),
@@ -62,10 +71,16 @@ Ship.prototype.fireBullet = function() {
   });
 
   this.game.add(bullet);
-}
+};
 
 Ship.prototype.pew = function() {
   let beat = new Audio('./laser.wav');
+  beat.volume = 0.05;
+  beat.play();
+};
+
+Ship.prototype.boom = function () {
+  let beat = new Audio('./small_explosion.wav');
   beat.volume = 0.05;
   beat.play();
 }

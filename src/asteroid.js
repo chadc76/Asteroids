@@ -33,6 +33,7 @@ Asteroid.prototype.collideWith = function(otherObject) {
       radius: this.radius,
       game: this.game
     })
+    console.log(explosion.radius)
     this.game.add(explosion);
     this.remove();
     otherObject.remove();
