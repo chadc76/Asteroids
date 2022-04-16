@@ -2,6 +2,7 @@ const Util = require("./util.js");
 const MovingObject = require("./moving_object.js");
 const Bullet = require("./bullet.js");
 const Ship = require("./ship");
+const Explosion = require("./explosion.js");
 
 const DEFAULTS = {
   COLOR: "#505050",
@@ -26,6 +27,13 @@ Asteroid.prototype.collideWith = function(otherObject) {
     otherObject.relocate();
     return true;
   } else if (otherObject instanceof Bullet) {
+    this.boom();
+    let explosion = new Explosion({
+      pos: this.pos,
+      radius: this.radius,
+      game: this.game
+    })
+    this.game.add(explosion);
     this.remove();
     otherObject.remove();
     return true;
@@ -34,5 +42,11 @@ Asteroid.prototype.collideWith = function(otherObject) {
   return false;
 }
 
+
+Asteroid.prototype.boom = function () {
+  let beat = new Audio('./explosion.wav');
+  beat.volume = 0.05;
+  beat.play();
+}
 
 module.exports = Asteroid;

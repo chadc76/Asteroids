@@ -65,6 +65,7 @@
 
 	const Asteroid = __webpack_require__(2);
 	const Bullet = __webpack_require__(7);
+	const Explosion = __webpack_require__(8);
 	const Ship = __webpack_require__(5);
 	const Util = __webpack_require__(3);
 
@@ -72,6 +73,7 @@
 	  this.asteroids = [];
 	  this.ships = [];
 	  this.bullets = [];
+	  this.explosions = [];
 
 	  this.addAsteroids();
 	};
@@ -88,6 +90,8 @@
 	    this.ships.push(object);
 	  } else if(object instanceof Bullet) {
 	    this.bullets.push(object);
+	  } else if(object instanceof Explosion) {
+	    this.explosions.push(object);
 	  } else {
 	    throw new Error("unknown type of object");
 	  }
@@ -162,13 +166,15 @@
 	    this.bullets.splice(this.bullets.indexOf(object), 1);
 	  } else if (object instanceof Ship) {
 	    this.ships.splice(this.ships.indexOf(object), 1);
+	  } else if (object instanceof Explosion) {
+	    this.explosions.splice(this.explosions.indexOf(object), 1);
 	  } else {
 	    throw new Error("unknown type of object");
 	  };
 	};
 
 	Game.prototype.allObjects = function() {
-	  return [].concat(this.asteroids, this.ships, this.bullets);
+	  return [].concat(this.asteroids, this.ships, this.bullets, this.explosions);
 	};
 
 	Game.prototype.isOutOfBounds = function(pos) {
@@ -194,6 +200,7 @@
 	const MovingObject = __webpack_require__(4);
 	const Bullet = __webpack_require__(7);
 	const Ship = __webpack_require__(5);
+	const Explosion = __webpack_require__(8);
 
 	const DEFAULTS = {
 	  COLOR: "#505050",
@@ -218,6 +225,13 @@
 	    otherObject.relocate();
 	    return true;
 	  } else if (otherObject instanceof Bullet) {
+	    this.boom();
+	    let explosion = new Explosion({
+	      pos: this.pos,
+	      radius: this.radius,
+	      game: this.game
+	    })
+	    this.game.add(explosion);
 	    this.remove();
 	    otherObject.remove();
 	    return true;
@@ -226,6 +240,12 @@
 	  return false;
 	}
 
+
+	Asteroid.prototype.boom = function () {
+	  let beat = new Audio('./explosion.wav');
+	  beat.volume = 0.05;
+	  beat.play();
+	}
 
 	module.exports = Asteroid;
 
@@ -402,6 +422,7 @@
 	};
 
 	Ship.prototype.fireBullet = function() {
+	  this.pew();
 	  const norm = Util.norm(this.vel);
 
 	  if (norm === 0) {
@@ -426,6 +447,12 @@
 	  });
 
 	  this.game.add(bullet);
+	}
+
+	Ship.prototype.pew = function() {
+	  let beat = new Audio('./laser.wav');
+	  beat.volume = 0.05;
+	  beat.play();
 	}
 
 	module.exports = Ship;
@@ -500,6 +527,37 @@
 	Bullet.prototype.isWrappable = false;
 
 	module.exports = Bullet;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	const Util = __webpack_require__(3);
+	const MovingObject = __webpack_require__(4);
+
+	function Explosion(options) {
+	  options.pos = options.pos
+	  options.radius = options.radius;
+	  options.vel = [0, 0];
+	  this.timeCreated = Date.now();
+
+	  MovingObject.call(this, options);
+	}
+
+	Util.inherits(Explosion, MovingObject);
+
+	Explosion.prototype.draw = function(ctx) {
+	  const explodedImg = new Image();
+	  explodedImg.src = "explosion.png";
+
+	  if (Date.now() - this.timeCreated > 300) {
+	    this.remove();
+	    return;
+	  }
+	  ctx.drawImage(explodedImg, this.pos[0], this.pos[1], 75, 75);
+	}
+
+	module.exports = Explosion;
 
 /***/ })
 /******/ ]);

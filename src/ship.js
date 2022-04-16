@@ -37,6 +37,7 @@ Ship.prototype.power = function(impulse) {
 };
 
 Ship.prototype.fireBullet = function() {
+  this.pew();
   const norm = Util.norm(this.vel);
 
   if (norm === 0) {
@@ -61,6 +62,12 @@ Ship.prototype.fireBullet = function() {
   });
 
   this.game.add(bullet);
+}
+
+Ship.prototype.pew = function() {
+  let beat = new Audio('./laser.wav');
+  beat.volume = 0.05;
+  beat.play();
 }
 
 module.exports = Ship;

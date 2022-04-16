@@ -1,5 +1,6 @@
 const Asteroid = require("./asteroid.js");
 const Bullet = require("./bullet.js");
+const Explosion = require("./explosion.js");
 const Ship = require("./ship.js");
 const Util = require("./util.js");
 
@@ -7,6 +8,7 @@ function Game() {
   this.asteroids = [];
   this.ships = [];
   this.bullets = [];
+  this.explosions = [];
 
   this.addAsteroids();
 };
@@ -23,6 +25,8 @@ Game.prototype.add = function add(object) {
     this.ships.push(object);
   } else if(object instanceof Bullet) {
     this.bullets.push(object);
+  } else if(object instanceof Explosion) {
+    this.explosions.push(object);
   } else {
     throw new Error("unknown type of object");
   }
@@ -97,13 +101,15 @@ Game.prototype.remove = function (object) {
     this.bullets.splice(this.bullets.indexOf(object), 1);
   } else if (object instanceof Ship) {
     this.ships.splice(this.ships.indexOf(object), 1);
+  } else if (object instanceof Explosion) {
+    this.explosions.splice(this.explosions.indexOf(object), 1);
   } else {
     throw new Error("unknown type of object");
   };
 };
 
 Game.prototype.allObjects = function() {
-  return [].concat(this.asteroids, this.ships, this.bullets);
+  return [].concat(this.asteroids, this.ships, this.bullets, this.explosions);
 };
 
 Game.prototype.isOutOfBounds = function(pos) {
