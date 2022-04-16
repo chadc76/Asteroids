@@ -329,8 +329,12 @@
 	MovingObject.prototype.isWrappable = true;
 
 	MovingObject.prototype.move = function(timeDelta) {
-	  timeDelta = timeDelta || 1
-	  this.pos = [this.pos[0] + (this.vel[0] * timeDelta), this.pos[1] + (this.vel[1] * timeDelta)];
+	  const normalFPS = 1000 / 60;
+
+	  const velX = (this.vel[0] * timeDelta) / normalFPS;
+	  const velY = (this.vel[1] * timeDelta) / normalFPS;
+
+	  this.pos = [this.pos[0] + velX, this.pos[1] + velY];
 
 	  if (this.game.isOutOfBounds(this.pos)) {
 	    if (this.isWrappable) {
@@ -464,10 +468,11 @@
 	  requestAnimationFrame(this.animate.bind(this));
 	};
 
-	GameView.prototype.animate = function() {
-
-	  this.game.step();
+	GameView.prototype.animate = function(time) {
+	  const timeDelta = time - this.lastTime;
+	  this.game.step(timeDelta);
 	  this.game.draw(this.ctx, this.img);
+	  this.lastTime = time;
 
 	  requestAnimationFrame(this.animate.bind(this));
 	};

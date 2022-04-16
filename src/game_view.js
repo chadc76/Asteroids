@@ -32,10 +32,11 @@ GameView.prototype.start = function() {
   requestAnimationFrame(this.animate.bind(this));
 };
 
-GameView.prototype.animate = function() {
-
-  this.game.step();
+GameView.prototype.animate = function(time) {
+  const timeDelta = time - this.lastTime;
+  this.game.step(timeDelta);
   this.game.draw(this.ctx, this.img);
+  this.lastTime = time;
 
   requestAnimationFrame(this.animate.bind(this));
 };

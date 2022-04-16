@@ -27,8 +27,12 @@ MovingObject.prototype.draw = function(ctx) {
 MovingObject.prototype.isWrappable = true;
 
 MovingObject.prototype.move = function(timeDelta) {
-  timeDelta = timeDelta || 1
-  this.pos = [this.pos[0] + (this.vel[0] * timeDelta), this.pos[1] + (this.vel[1] * timeDelta)];
+  const normalFPS = 1000 / 60;
+
+  const velX = (this.vel[0] * timeDelta) / normalFPS;
+  const velY = (this.vel[1] * timeDelta) / normalFPS;
+
+  this.pos = [this.pos[0] + velX, this.pos[1] + velY];
 
   if (this.game.isOutOfBounds(this.pos)) {
     if (this.isWrappable) {
