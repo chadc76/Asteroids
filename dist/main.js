@@ -421,7 +421,7 @@
 	  const bullet = new Bullet({
 	    pos: this.pos,
 	    vel: bulletVel,
-	    color: this.color,
+	    color: "white",
 	    game: this.game
 	  });
 
